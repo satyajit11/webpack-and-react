@@ -1,6 +1,7 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const webpack = require('webpack');
+const NpmInstallPlugin= require('npm-install-webpack-plugin');
 
 const TARGET = process.env.npm_lifecycle_event;
 const PATHS = {
@@ -12,6 +13,9 @@ const common = {
     entry: {
         app: PATHS.app
     },
+    resolve: {
+        extension: ['','.js','.jsx']
+    },
     output: {
         path: PATHS.build,
         filename: 'bundle.js'
@@ -21,7 +25,12 @@ const common = {
             {
                 test: /\.css$/,
                 loaders: ['style','css'],
-                include: PATHS.app,
+                include: PATHS.app
+            },
+            {
+                test: /\.jsx?$/,
+                loaders: ['babel?cacheDirectory'],
+                include: PATHS.app
             }
         ]
     }
